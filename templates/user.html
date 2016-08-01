@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html"; charset="utf-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, inital-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/">
+
+    <title>Bus Times</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{  url_for('static', filename='custom.css') }}" rel="stylesheet">
+
+    <!-- HTML5 shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!-- [if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.minjs"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script>
+    <![end if]-->
+
+  </head>
+
+  <body>
+
+    <!-- Header -->
+    <header class="site-header" role="banner">
+      <!-- Navbar -->
+      <div class="navbar-wrapper">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" >Next Bus</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="/">Home</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Body -->
+
+    <div id="body" class="container">
+      
+      <!-- STOP 1 -->
+      
+      <div><p class="stop">{{ output[0]['stop'] }}</p></div>
+      <div><p class="distance">{{ output[0]['dist'] }}</p></div>
+      <div class="header row">
+        <div class="routeNum col-xs-2 col">
+          <h5>Route ID</h5>
+        </div>
+        <div class="routeName col-xs-6 col">
+          <h5>Route Name</h5>
+        </div>
+        <div class="arrivalTime col-xs-4">
+          <h5>Depature Time</h5>
+        </div>
+      </div>
+      <div class="bus-1 row">
+        <div class="bus-1-routeNum col-xs-2">
+          <p>{{ output[0]['lines'][0][0] }}</p>
+        </div>
+        <div class="bus-1-routeName col-xs-6">
+          <p>{{ output[0]['lines'][0][1] }}</p>
+        </div>
+        <div class="bus-1-arrivalTime col-xs-4">
+          <p>{{ output[0]['lines'][0][2] }}</p>
+        </div>
+      </div>
+      <div class="bus-2 row">
+        <div class="bus-2-routeNum col-xs-2">
+          <p>{{ output[0]['lines'][1][0] }}</p>
+        </div>
+        <div class="bus-2-routeName col-xs-6">
+          <p>{{ output[0]['lines'][1][1] }}</p>
+        </div>
+        <div class="bus-2-arrivalTime col-xs-4">
+          <p>{{ output[0]['lines'][1][2] }}</p>
+        </div>
+      </div>
+      <div class="bus-3 row">
+        <div class="bus-3-routeNum col-xs-2">
+          <p>{{ output[0]['lines'][2][0] }}</p>
+        </div>
+        <div class="bus-3-routeName col-xs-6">
+          <p>{{ output[0]['lines'][2][1] }}</p>
+        </div>
+        <div class="bus-3-arrivalTime col-xs-4">
+          <p>{{ output[0]['lines'][2][2] }}</p>
+        </div>
+      </div>
+      <div class="bus-4 row">
+        <div class="bus-4-routeNum col-xs-2">
+          <p>{{ output[0]['lines'][3][0] }}</p>
+        </div>
+        <div class="bus-4-routeName col-xs-6">
+          <p>{{ output[0]['lines'][3][1] }}</p>
+        </div>
+        <div class="bus-4-arrivalTime col-xs-4">
+          <p>{{ output[0]['lines'][3][2] }}</p>
+        </div>
+      </div>
+      
+      <!-- STOP 2 -->
+      
+      <div class="stop"><p>{{ output[1]['stop'] }}</p></div>
+      <div class="distance"><p>{{ output[1]['dist'] }}</p></div>
+      <div class="header row">
+        <div class="routeNum col-xs-2 col">
+          <h5>Route ID</h5>
+        </div>
+        <div class="routeName col-xs-6 col">
+          <h5>Route Name</h5>
+        </div>
+        <div class="arrivalTime col-xs-4">
+          <h5>Depature Time</h5>
+        </div>
+      </div>
+      <div class="bus-1 row">
+        <div class="bus-1-routeNum col-xs-2">
+          <p>{{ output[1]['lines'][0][0] }}</p>
+        </div>
+        <div class="bus-1-routeName col-xs-6">
+          <p>{{ output[1]['lines'][0][1] }}</p>
+        </div>
+        <div class="bus-1-arrivalTime col-xs-4">
+          <p>{{ output[1]['lines'][0][2] }}</p>
+        </div>
+      </div>
+      <div class="bus-2 row">
+        <div class="bus-2-routeNum col-xs-2">
+          <p>{{ output[1]['lines'][1][0] }}</p>
+        </div>
+        <div class="bus-2-routeName col-xs-6">
+          <p>{{ output[1]['lines'][1][1] }}</p>
+        </div>
+        <div class="bus-2-arrivalTime col-xs-4">
+          <p>{{ output[1]['lines'][1][2] }}</p>
+        </div>
+      </div>
+      <div class="bus-3 row">
+        <div class="bus-3-routeNum col-xs-2">
+          <p>{{ output[1]['lines'][2][0] }}</p>
+        </div>
+        <div class="bus-3-routeName col-xs-6">
+          <p>{{ output[1]['lines'][2][1] }}</p>
+        </div>
+        <div class="bus-3-arrivalTime col-xs-4">
+          <p>{{ output[1]['lines'][2][2] }}</p>
+        </div>
+      </div>
+      <div id="lastBus" class="bus-4 row">
+        <div class="bus-4-routeNum col-xs-2">
+          <p>{{ output[1]['lines'][3][0] }}</p>
+        </div>
+        <div class="bus-4-routeName col-xs-6">
+          <p>{{ output[1]['lines'][3][1] }}</p>
+        </div>
+        <div class="bus-4-arrivalTime col-xs-4">
+          <p>{{ output[1]['lines'][3][2] }}</p>
+        </div>
+      </div>
+    
+      <!-- STOP 3 -->
+      
+      <div><p class="stop">{{ output[2]['stop'] }}</p></div>
+      <div><p class="distance">{{ output[2]['dist'] }}</p></div>
+      <div class="header row">
+        <div class="routeNum col-xs-2 col">
+          <h5>Route ID</h5>
+        </div>
+        <div class="routeName col-xs-6 col">
+          <h5>Route Name</h5>
+        </div>
+        <div class="arrivalTime col-xs-4">
+          <h5>Depature Time</h5>
+        </div>
+      </div>
+      <div class="bus-1 row">
+        <div class="bus-1-routeNum col-xs-2">
+          <p>{{ output[2]['lines'][0][0] }}</p>
+        </div>
+        <div class="bus-1-routeName col-xs-6">
+          <p>{{ output[2]['lines'][0][1] }}</p>
+        </div>
+        <div class="bus-1-arrivalTime col-xs-4">
+          <p>{{ output[2]['lines'][0][2] }}</p>
+        </div>
+      </div>
+      <div class="bus-2 row">
+        <div class="bus-2-routeNum col-xs-2">
+          <p>{{ output[2]['lines'][1][0] }}</p>
+        </div>
+        <div class="bus-2-routeName col-xs-6">
+          <p>{{ output[2]['lines'][1][1] }}</p>
+        </div>
+        <div class="bus-2-arrivalTime col-xs-4">
+          <p>{{ output[2]['lines'][1][2] }}</p>
+        </div>
+      </div>
+      <div class="bus-3 row">
+        <div class="bus-3-routeNum col-xs-2">
+          <p>{{ output[2]['lines'][2][0] }}</p>
+        </div>
+        <div class="bus-3-routeName col-xs-6">
+          <p>{{ output[2]['lines'][2][1] }}</p>
+        </div>
+        <div class="bus-3-arrivalTime col-xs-4">
+          <p>{{ output[2]['lines'][2][2] }}</p>
+        </div>
+      </div>
+      <div class="bus-4 row">
+        <div class="bus-4-routeNum col-xs-2">
+          <p>{{ output[2]['lines'][3][0] }}</p>
+        </div>
+        <div class="bus-4-routeName col-xs-6">
+          <p>{{ output[2]['lines'][3][1] }}</p>
+        </div>
+        <div class="bus-4-arrivalTime col-xs-4">
+          <p>{{ output[2]['lines'][3][2] }}</p>
+        </div>
+      </div>
+    
+    </div>
+
+
+    <!-- Bootrap core Javascript
+         placed at the bottom of the document so the page loads faster-->
+    
+    <script>
+      /*
+      getLocation();
+      var x = document.getElementById("GPS");
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+      function showPosition(position) {
+        //location.replace('http://127.0.0.1:5000/'+position.coords.latitude+','+position.coords.longitude)
+        x.innerHTML = "Latitude: " + position.coords.latitude + 
+        "<br>Longitude: " + position.coords.longitude; 
+      }
+      */
+    </script>
+    
+    
+
+  </body>
+</html>

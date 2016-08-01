@@ -1,0 +1,64 @@
+/* Colour References
+
+Green:      #79B044
+Salmon:     #dd5638
+Blue gray:  #3e4249  
+
+*/
+
+/* ==== General ==== */
+
+body {
+  margin-top: 50px;
+  font-family: monospace;
+  font-size: 16px;
+  text-align: center;
+  color: #FBC559;
+  background-color: #474747;
+}
+
+.col {
+  border-right: 1px grey solid;
+  height: 60px;
+}
+
+.row {
+  display: inline-block;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  
+}
+/*
+.stop {
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.distance {
+  display: inline-block;
+  padding-bottom: 30px;
+  padding-top: 20px;
+}
+*/
+.header.row {
+  display: inline-block;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  border-top: 1px grey solid;
+  border-bottom: 1px grey solid;
+}
+
+/*
+.routeNum {
+  border-bottom: 1px grey solid;
+  height: 60px;
+}
+*/
+
+.bus-4 {
+  border-bottom: 1px grey solid;
+}
+
+
+
