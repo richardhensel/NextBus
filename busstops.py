@@ -71,6 +71,7 @@ class Schedule():
                 and 'FUL' in time.trip_id:
                 next_times.append(time)
 
+
         return heapq.nsmallest(n_times, next_times, key = lambda t: t.departure_time_seconds)
 
     def get_trip(self, time):
@@ -126,8 +127,6 @@ class Schedule():
             line_string_format = '{0} {1} {2}'
             print(line_string_format.format('Route','Destination','Departs'))
 
-
-
             for time in times:
                 trip  = self.get_trip(time)
                 route = self.get_route(trip)
@@ -149,25 +148,33 @@ class Schedule():
         stoplist = []
         for stop in stops:
             times = self.get_times_by_stop(stop, n_times)
+            print times
             lines = []
 
             dist_to_stop = sqrt((float(u_lat)-float(stop.stop_lat))**2 +  (float(u_lon)-float(stop.stop_lon))**2)*111.120
 
+            # Check if times is empty
+            if not times:
+               for i in range(0, n_times):
+                   lines.append(
+                       ("   ", "         No Service         ", "     ")
+                       )
+            else:
 
-            for time in times:
-                trip  = self.get_trip(time)
-                route = self.get_route(trip)
+                for time in times:
+                    trip  = self.get_trip(time)
+                    route = self.get_route(trip)
 
-                #Update the time entry from live feed
-                latest_time = self.update_time(updatedFeed, time)
-                #latest_time = time
-
-                mins_to_dep = int((latest_time.departure_time_seconds - seconds_since_midnight)//60)
-                min_suffix = ' min' if abs(mins_to_dep) == 1 else ' mins'
-
-                lines.append(
-                    (route.route_short_name, route.route_long_name, str(mins_to_dep)+min_suffix)
-                    )
+                    #Update the time entry from live feed
+                    latest_time = self.update_time(updatedFeed, time)
+    
+                    mins_to_dep = int((latest_time.departure_time_seconds - seconds_since_midnight)//60)
+                    min_suffix = ' min' if abs(mins_to_dep) == 1 else ' mins'
+    
+                    lines.append(
+                        (route.route_short_name, route.route_long_name, str(mins_to_dep)+min_suffix)
+                        )
+                
             stoplist.append({
                 'stop':  stop.stop_name,
                 'lines': lines,

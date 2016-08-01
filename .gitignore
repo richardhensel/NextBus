@@ -1,0 +1,4 @@
+*.pyc
+*~
+test.py
+SEQ_GTFS
