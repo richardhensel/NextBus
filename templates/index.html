@@ -39,7 +39,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="/" >PhatHak$</a>
+              <a class="navbar-brand" href="/" >NextBus</a>
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav navbar-right">
@@ -106,21 +106,52 @@
 
     <!-- Bootrap core Javascript
          placed at the bottom of the document so the page loads faster-->
-    
-    <script>
-      getLocation();
-      var x = document.getElementById("GPS");
+
+    <script type="text/javascript" 
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+    <script type="text/javascript"> 
+      var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}; 
+    </script>               
+
+    <script type="text/javascript">
+      window.onload=function(){
+        getGeoLocation()
+      }
+
       function getLocation() {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-          x.innerHTML = "Geolocation is not supported by this browser.";
         }
       }
+
       function showPosition(position) {
-        location.replace('http://127.0.0.1:5000/user/'+position.coords.latitude+','+position.coords.longitude)
-        //x.innerHTML = "Latitude: " + position.coords.latitude + 
-        //"<br>Longitude: " + position.coords.longitude; 
+        var data = {'lat':'position.coords.latitude','lon':'position.coords.longitude'};
+        $.ajax({
+          url: url,
+          type: 'POST',
+          contentType:'application/json',
+          data: JSON.stringify(data),
+          dataType:'json',
+
+          success: function(data){
+            //On ajax success do this
+            alert(data);
+             },
+          error: function(xhr, ajaxOptions, thrownError) {
+             //On error do this
+               $.mobile.loading('hide')
+               if (xhr.status == 200) {
+       
+                   alert(ajaxOptions);
+               }
+               else {
+                   alert(xhr.status);
+                   alert(thrownError);
+               }
+           }
+        });
+
+
       }
     </script>
     
@@ -128,3 +159,4 @@
 
   </body>
 </html>
+   </script>
