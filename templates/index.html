@@ -114,49 +114,26 @@
     </script>               
 
     <script type="text/javascript">
-      window.onload=function(){
-        getGeoLocation()
-      }
+      var x = document.getElementById("GPS");
+      getLocation();
 
       function getLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition);
-        }
-      }
+         if (navigator.geolocation) {
+           navigator.geolocation.getCurrentPosition(showPosition);
+         } else {
+           x.innerHTML = "Geolocation is not supported by this browser.";
+         }
+       }
 
-      function showPosition(position) {
-        var data = {'lat':'position.coords.latitude','lon':'position.coords.longitude'};
-        $.ajax({
-          url: url,
-          type: 'POST',
-          contentType:'application/json',
-          data: JSON.stringify(data),
-          dataType:'json',
+       function showPosition(position) {
+        // location.replace('http://127.0.0.1:5000/user/'+position.coords.latitude+','+position.coords.longitude)
+         $.getJSON($SCRIPT_ROOT + '/_get_location', {
+           lat: position.coords.latitude,
+           lon: position.coords.longitude
+         }, function(data) {
 
-          success: function(data){
-            //On ajax success do this
-            alert(data);
-             },
-          error: function(xhr, ajaxOptions, thrownError) {
-             //On error do this
-               $.mobile.loading('hide')
-               if (xhr.status == 200) {
-       
-                   alert(ajaxOptions);
-               }
-               else {
-                   alert(xhr.status);
-                   alert(thrownError);
-               }
-           }
-        });
-
-
-      }
+         });
+       }
     </script>
-    
-    
-
   </body>
 </html>
-   </script>
