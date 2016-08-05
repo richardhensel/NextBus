@@ -55,10 +55,11 @@
 
     <div id="body" class="container">
       
-      <!-- STOP 1 -->
-      
-      <div><p class="stop">{{ output[0]['stop'] }}</p></div>
-      <div><p class="distance">{{ output[0]['dist'] }}</p></div>
+      <!-- Dynamically size the display based on output -->
+    {% for stop in output %}
+  
+      <div><p class="stop">{{ stop['stop'] }}</p></div>
+      <div><p class="distance">{{ stop['dist'] }}</p></div>
       <div class="header row">
         <div class="routeNum col-xs-2 col">
           <h5>Route ID</h5>
@@ -70,197 +71,61 @@
           <h5>Depature Time</h5>
         </div>
       </div>
-      <div class="bus-1 row">
-        <div class="bus-1-routeNum col-xs-2">
-          <p>{{ output[0]['lines'][0][0] }}</p>
+      {% set i = 0 %}
+      {% for line in stop['lines'] %}
+      {% set counter = i + 1 %}
+      <div class=  "bus-{{ counter }} row">
+        <div class="bus-{{ counter }}-routeNum col-xs-2">
+          <p>{{ stop['lines'][i][0] }}</p>
         </div>
-        <div class="bus-1-routeName col-xs-6">
-          <p>{{ output[0]['lines'][0][1] }}</p>
+        <div class="bus-{{ counter }}-routeName col-xs-6">
+          <p>{{ stop['lines'][i][1] }}</p>
         </div>
-        <div class="bus-1-arrivalTime col-xs-4">
-          <p>{{ output[0]['lines'][0][2] }}</p>
-        </div>
-      </div>
-      <div class="bus-2 row">
-        <div class="bus-2-routeNum col-xs-2">
-          <p>{{ output[0]['lines'][1][0] }}</p>
-        </div>
-        <div class="bus-2-routeName col-xs-6">
-          <p>{{ output[0]['lines'][1][1] }}</p>
-        </div>
-        <div class="bus-2-arrivalTime col-xs-4">
-          <p>{{ output[0]['lines'][1][2] }}</p>
+        <div class="bus-{{ counter }}-arrivalTime col-xs-4">
+          <p>{{ stop['lines'][i][2] }}</p>
         </div>
       </div>
-      <div class="bus-3 row">
-        <div class="bus-3-routeNum col-xs-2">
-          <p>{{ output[0]['lines'][2][0] }}</p>
-        </div>
-        <div class="bus-3-routeName col-xs-6">
-          <p>{{ output[0]['lines'][2][1] }}</p>
-        </div>
-        <div class="bus-3-arrivalTime col-xs-4">
-          <p>{{ output[0]['lines'][2][2] }}</p>
-        </div>
-      </div>
-      <div class="bus-4 row">
-        <div class="bus-4-routeNum col-xs-2">
-          <p>{{ output[0]['lines'][3][0] }}</p>
-        </div>
-        <div class="bus-4-routeName col-xs-6">
-          <p>{{ output[0]['lines'][3][1] }}</p>
-        </div>
-        <div class="bus-4-arrivalTime col-xs-4">
-          <p>{{ output[0]['lines'][3][2] }}</p>
-        </div>
-      </div>
-      
-      <!-- STOP 2 -->
-      
-      <div class="stop"><p>{{ output[1]['stop'] }}</p></div>
-      <div class="distance"><p>{{ output[1]['dist'] }}</p></div>
-      <div class="header row">
-        <div class="routeNum col-xs-2 col">
-          <h5>Route ID</h5>
-        </div>
-        <div class="routeName col-xs-6 col">
-          <h5>Route Name</h5>
-        </div>
-        <div class="arrivalTime col-xs-4">
-          <h5>Depature Time</h5>
-        </div>
-      </div>
-      <div class="bus-1 row">
-        <div class="bus-1-routeNum col-xs-2">
-          <p>{{ output[1]['lines'][0][0] }}</p>
-        </div>
-        <div class="bus-1-routeName col-xs-6">
-          <p>{{ output[1]['lines'][0][1] }}</p>
-        </div>
-        <div class="bus-1-arrivalTime col-xs-4">
-          <p>{{ output[1]['lines'][0][2] }}</p>
-        </div>
-      </div>
-      <div class="bus-2 row">
-        <div class="bus-2-routeNum col-xs-2">
-          <p>{{ output[1]['lines'][1][0] }}</p>
-        </div>
-        <div class="bus-2-routeName col-xs-6">
-          <p>{{ output[1]['lines'][1][1] }}</p>
-        </div>
-        <div class="bus-2-arrivalTime col-xs-4">
-          <p>{{ output[1]['lines'][1][2] }}</p>
-        </div>
-      </div>
-      <div class="bus-3 row">
-        <div class="bus-3-routeNum col-xs-2">
-          <p>{{ output[1]['lines'][2][0] }}</p>
-        </div>
-        <div class="bus-3-routeName col-xs-6">
-          <p>{{ output[1]['lines'][2][1] }}</p>
-        </div>
-        <div class="bus-3-arrivalTime col-xs-4">
-          <p>{{ output[1]['lines'][2][2] }}</p>
-        </div>
-      </div>
-      <div id="lastBus" class="bus-4 row">
-        <div class="bus-4-routeNum col-xs-2">
-          <p>{{ output[1]['lines'][3][0] }}</p>
-        </div>
-        <div class="bus-4-routeName col-xs-6">
-          <p>{{ output[1]['lines'][3][1] }}</p>
-        </div>
-        <div class="bus-4-arrivalTime col-xs-4">
-          <p>{{ output[1]['lines'][3][2] }}</p>
-        </div>
-      </div>
-    
-      <!-- STOP 3 -->
-      
-      <div><p class="stop">{{ output[2]['stop'] }}</p></div>
-      <div><p class="distance">{{ output[2]['dist'] }}</p></div>
-      <div class="header row">
-        <div class="routeNum col-xs-2 col">
-          <h5>Route ID</h5>
-        </div>
-        <div class="routeName col-xs-6 col">
-          <h5>Route Name</h5>
-        </div>
-        <div class="arrivalTime col-xs-4">
-          <h5>Depature Time</h5>
-        </div>
-      </div>
-      <div class="bus-1 row">
-        <div class="bus-1-routeNum col-xs-2">
-          <p>{{ output[2]['lines'][0][0] }}</p>
-        </div>
-        <div class="bus-1-routeName col-xs-6">
-          <p>{{ output[2]['lines'][0][1] }}</p>
-        </div>
-        <div class="bus-1-arrivalTime col-xs-4">
-          <p>{{ output[2]['lines'][0][2] }}</p>
-        </div>
-      </div>
-      <div class="bus-2 row">
-        <div class="bus-2-routeNum col-xs-2">
-          <p>{{ output[2]['lines'][1][0] }}</p>
-        </div>
-        <div class="bus-2-routeName col-xs-6">
-          <p>{{ output[2]['lines'][1][1] }}</p>
-        </div>
-        <div class="bus-2-arrivalTime col-xs-4">
-          <p>{{ output[2]['lines'][1][2] }}</p>
-        </div>
-      </div>
-      <div class="bus-3 row">
-        <div class="bus-3-routeNum col-xs-2">
-          <p>{{ output[2]['lines'][2][0] }}</p>
-        </div>
-        <div class="bus-3-routeName col-xs-6">
-          <p>{{ output[2]['lines'][2][1] }}</p>
-        </div>
-        <div class="bus-3-arrivalTime col-xs-4">
-          <p>{{ output[2]['lines'][2][2] }}</p>
-        </div>
-      </div>
-      <div class="bus-4 row">
-        <div class="bus-4-routeNum col-xs-2">
-          <p>{{ output[2]['lines'][3][0] }}</p>
-        </div>
-        <div class="bus-4-routeName col-xs-6">
-          <p>{{ output[2]['lines'][3][1] }}</p>
-        </div>
-        <div class="bus-4-arrivalTime col-xs-4">
-          <p>{{ output[2]['lines'][3][2] }}</p>
-        </div>
-      </div>
-    
-    </div>
+      {% set i = i + 1 %}
+      {% endfor %}
+    {% endfor %}
 
-
-    <!-- Bootrap core Javascript
-         placed at the bottom of the document so the page loads faster-->
-    
-    <script>
-      /*
-      getLocation();
-      var x = document.getElementById("GPS");
-      function getLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-          x.innerHTML = "Geolocation is not supported by this browser.";
-        }
-      }
-      function showPosition(position) {
-        //location.replace('http://127.0.0.1:5000/'+position.coords.latitude+','+position.coords.longitude)
-        x.innerHTML = "Latitude: " + position.coords.latitude + 
-        "<br>Longitude: " + position.coords.longitude; 
-      }
-      */
+  {% if runscript == 1 %}
+    <script type="text/javascript" 
+      src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript"> 
+      var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}; 
     </script>
-    
-    
+
+    <script type="text/javascript">
+
+      var x = document.getElementById("GPS");
+
+      getLocation();
+
+      function getLocation() {
+         if (navigator.geolocation) {
+           navigator.geolocation.getCurrentPosition(showPosition);
+         } else {
+           x.innerHTML = "Geolocation is not supported by this browser.";
+         }
+       }
+
+       function showPosition(position) {
+        // location.replace('http://127.0.0.1:5000/user/'+position.coords.latitude+','+position.coords.longitude)
+         $.getJSON($SCRIPT_ROOT + '/_get_location', {
+           lat: position.coords.latitude,
+           lon: position.coords.longitude
+         }, function(data) {
+              if (data.redirect) {
+                window.location.href = data.redirect;
+              } 
+         });
+         Location.replace($SCRIPT_ROOT + '/done');
+       }
+    </script>
+  {% endif %}
+
+
 
   </body>
 </html>
