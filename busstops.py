@@ -1,9 +1,11 @@
+#!/usr/bin/env python2
+
 import urllib2
 import csv
 import os
 import heapq
 import pickle
-from math import sqrt
+from math import sqrt, atan2, radians, degrees
 
 from google.transit import gtfs_realtime_pb2
 import urllib
@@ -107,6 +109,46 @@ class Schedule():
         unix_time= today.strftime("%s") #Second as a decimal number [00,61] (or Unix Timestamp)
         return int(unix_time)
 
+    def _stop_location(self, stop, u_lat, u_lon):
+        """ Return distance and direction to stop, using Euclidian approximations """
+
+        lat1, lat2, lon1, lon2 = map(radians,
+            [float(u_lat), float(stop.stop_lat), float(u_lon), float(stop.stop_lon)])
+
+        R = 6371 # Approximate radius of Earth in km
+
+        dist = sqrt((lat2 - lat1)**2 + (lon2 - lon1)**2)*R
+
+        bearing = atan2((lon2 - lon1),(lat2 - lat1))
+
+        dirn = {
+            "N":    0,
+            "NNE":  22.5,
+            "NE":   45,
+            "ENE":  67.5,
+            "E":    90,
+            "ESE":  112.5,
+            "SE":   135,
+            "SSE":  157.5,
+            "S":    180,
+            "SSW":  202.5,
+            "SW":   225,
+            "WSW":  247.5,
+            "W":    270,
+            "WNW":  292.5,
+            "NW":   315,
+            "NNW":  337.5
+        }
+
+        s_dir = "N"
+
+        for key in dirn:
+            if abs(degrees(bearing)-dirn[key]) <= 11.25:
+                return dist, key
+        else:
+            # value must have fallen between 348.75 and 0
+            return dist, "N"
+
     def sign_test(self,u_lat,u_lon, n_stops=2, n_times=3):
         """ Print a test sign to the command line """
 
@@ -119,10 +161,10 @@ class Schedule():
             print('\n')
             times = self.get_times_by_stop(stop, n_times)
             print('Stop: {0}'.format(stop.stop_name))
-            print('Current time: {0}'.format(strftime('%H:%M')))
 
-            dist_to_stop = sqrt((float(u_lat)-float(stop.stop_lat))**2 +  (float(u_lon)-float(stop.stop_lon))**2)*111.120
+            dist_to_stop, dirn_to_stop = self._stop_location(stop, u_lat, u_lon)
             print('Distance to stop: {0:.1f} km'.format(dist_to_stop))
+            print('Direction to stop: {0}'.format(dirn_to_stop))
 
             line_string_format = '{0} {1} {2}'
             print(line_string_format.format('Route','Destination','Departs'))
@@ -151,7 +193,7 @@ class Schedule():
             print times
             lines = []
 
-            dist_to_stop = sqrt((float(u_lat)-float(stop.stop_lat))**2 +  (float(u_lon)-float(stop.stop_lon))**2)*111.120
+            dist_to_stop, dirn_to_stop = self._stop_location(stop, u_lat, u_lon)
 
             # Check if times is empty
             if not times:
@@ -179,6 +221,7 @@ class Schedule():
                 'stop':  stop.stop_name,
                 'lines': lines,
                 'dist':  '{0:.1f} km'.format(dist_to_stop),
+                'dirn':  dirn_to_stop
                 })
         return stoplist
 
