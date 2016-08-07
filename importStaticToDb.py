@@ -192,14 +192,16 @@ def processTime(timeString):
 
     return int(3600 * hours + 60 * minutes + seconds)
 
+
+# Main.
 if __name__ == "__main__":
     print 'Creating database...'
-    conn = sqlite3.connect('../database.db')
+    conn = sqlite3.connect('database.db')
     c = conn.cursor()
 
     print 'Creating tables...'
     createTables()
-    populateTables('../SEQ_GTFS')
+    populateTables('SEQ_GTFS')
 
     print 'Closing...'
     conn.commit()
