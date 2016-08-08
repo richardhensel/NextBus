@@ -3,6 +3,6 @@
 *.swp
 *.swo
 *.swn
-
+*.db
 *~
 SEQ_GTFS

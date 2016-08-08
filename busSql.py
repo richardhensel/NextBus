@@ -1,3 +1,33 @@
+import heapq
+import datetime
+import time
+
+
+
+class Stop():
+    def __init__(self, stop_id, name, lat, lon, dire):
+        self.stop_id = stop_id
+        self.stop_name = name
+        self.stop_lat = lat
+        self.stop_lon = lon
+        delf.stop_dir = dire
+
+class Time():
+    def __init__(self, trip_id, departure_time):
+        self.trip_id = trip_id
+        self.departure_time_seconds = departure_time
+
+class Trip():
+    def __init__(self, route_id):
+        self.route_id = route_id
+
+class Route():
+    def __init_(self, short_name, long_name):
+        self.route_short_name = short_name
+        self.route_long_name = long_name
+
+
+
 
 class Schedule():
     def __init__(self, savedir = None):
@@ -12,7 +42,7 @@ class Schedule():
 
         """ Import relevant GTFS data """
 
-    def get_times_by_stop(self, stop_stop_id, n_times, dt_offset = 120):
+    def get_times_by_stop(self, stop, n_times, dt_offset = 120):
         """ Return the next n arrivals at the given stop """
         
         current_time = self._seconds_since_midnight()
@@ -25,45 +55,53 @@ class Schedule():
         self.curs.execute(s)
         rows = self.curs.fetchall()
 
-        trip_info = []
+        times = []
         for row in rows:
-            trip_info.append([row[0], row[1]])
+            times.append(Time(row[0], row[1]))
 
         time = lambda trip_info: trip_info[1]
         return heapq.nsmallest(n_times, trip_info, key = time )
 
-    def get_trip(self, time_trip_id):
+    def get_trip(self, time):
         """ Return the trip (containing route_id and direction_id) for a given stop time """
 
         # Get the next n times which are arriving at a given stop
-        s = 'SELECT route_id FROM Trip WHERE stop_id ==' + str(time_trip_id) 
+        s = 'SELECT route_id FROM Trip WHERE stop_id ==' + str(time.trip_id) 
         self.curs.execute(s)
         rows = self.curs.fetchall()
 
-        route_ids = []
+        trips = []
         for row in rows:
-            route_ids.append(row[0])
+            trips.append(Trip(row[0]))
 
-        return route_ids
+        return trips
 
-    def get_route(self, trip_route_id):
+    def get_route(self, trip):
         """ Return the route (containing short and long route names) for a given trip """
 
-        s = 'SELECT route_short_name, route_long_name FROM Trip WHERE stop_id ==' + str(trip_route_id) 
+        s = 'SELECT route_short_name, route_long_name FROM Trip WHERE stop_id ==' + str(trip.route_id) 
         self.curs.execute(s)
         rows = self.curs.fetchone()
 
-        return [rows[0], rows[1]]
+        return Route(rows[0], rows[1])
 
 # return empty stops but make it clear there is nothin there succinctly.
 
     def nearest_with_trips(self,u_lat,u_lon, n_stops = 1):
         """ Return index of nearest bus stop to specified coordinates """
 
+        s = 'SELECT stop_id, stop_name, stop_lat, stop_lon,  FROM Trip WHERE stop_id ==' + str(time_trip_id) 
+        self.curs.execute(s)
+        rows = self.curs.fetchall()
 
-        dist = lambda stop: sqrt((float(u_lat)-float(stop.stop_lat))**2 +  (float(u_lon)-float(stop.stop_lon))**2)
-        # return min(self.stop, key=dist)
-        return heapq.nsmallest(n_stops, self.stop, key=dist)
+        stops = []
+        for row in rows:
+            stops.append(Stop(row[0], row[1], row[2], row[3], get_dist(u_lat, u_lon, row[2], row[3]), 0)
+
+        return heapq.nsmallest(n_stops, stops, key=lambda stops: stops.dist)
+
+    def get_dist(lat1, lon1, lat2, lon2):
+        return sqrt((float(lat1)-float(lat2))**2 +  (float(lon1)-float(lon2))**2)
 
     def _seconds_since_midnight(self):
         now = time.time()
@@ -79,16 +117,14 @@ class Schedule():
         #get latest live feed
         updatedFeed = self.update_info()
        
-        stops = self.nearest_with_trips(u_lat, u_lon, n_stops)
+        close_stops = self.nearest_with_trips(u_lat, u_lon, n_stops)
 
         seconds_since_midnight = self._seconds_since_midnight()
 
         stoplist = []
-        for stop in stops:
+        for stop in close_stops:
             times = self.get_times_by_stop(stop, n_times)
             lines = []
-
-            dist_to_stop = sqrt((float(u_lat)-float(stop.stop_lat))**2 +  (float(u_lon)-float(stop.stop_lon))**2)*111.120
 
             # Check if times is empty
             if not times:
@@ -99,7 +135,7 @@ class Schedule():
             else:
 
                 for time in times:
-                    trip  = self.get_trip(time)
+                    trip = self.get_route_id(trip_id_time[0])
                     route = self.get_route(trip)
 
                     #Update the time entry from live feed
