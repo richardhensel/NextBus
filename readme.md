@@ -5,6 +5,9 @@ Displays the next bus services departing from bus stops closest to you.
 
 # TODO:
 
+
+Make distance and direction work.
+
 Implement database for storage, supporting SQL queries
 
 Don't display a stop if there are no services arriving there.

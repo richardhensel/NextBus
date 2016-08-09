@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, jsonify, request, redirect, url_for
-from busstops import Schedule
+from busSql import Schedule
 
 app = Flask(__name__)
 
@@ -31,7 +31,7 @@ def get_location():
 
 
 if __name__ == "__main__":
-    schedule = Schedule()
+    schedule = Schedule('StaticGtfs.db')
 
     output = [{' ':'s ','lines':[(' ',' ',' '),
     (' ','Loading',' '),
