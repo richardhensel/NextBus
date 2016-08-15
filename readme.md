@@ -8,7 +8,7 @@ Displays the next bus services departing from bus stops closest to you.
 
 Make distance and direction work.
 
-Implement database for storage, supporting SQL queries
+Implement database for storage, supporting SQL queries. Done.
 
 Don't display a stop if there are no services arriving there.
 
