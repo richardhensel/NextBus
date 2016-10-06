@@ -196,7 +196,7 @@ def processTime(timeString):
 # Main.
 if __name__ == "__main__":
     print 'Creating database...'
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('StaticGtfs.db')
     c = conn.cursor()
 
     print 'Creating tables...'
