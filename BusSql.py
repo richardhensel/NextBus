@@ -2,7 +2,7 @@ import heapq
 import datetime
 import time
 import sqlite3
-from math import sqrt
+from math import sqrt, atan2, degrees
 
 from google.transit import gtfs_realtime_pb2
 import urllib
@@ -92,13 +92,47 @@ class Schedule():
 
         stops = []
         for row in rows:
-            stops.append(Stop(row[0], str(row[1]), float(row[2]), float(row[3]), self.get_dist(u_lat, u_lon, float(row[2]), float(row[3])), 0))
+            dist, dirn = self.get_loc(u_lat, u_lon, float(row[2]), float(row[3]))
+            stops.append(Stop(row[0], str(row[1]), float(row[2]), float(row[3]), dist, dirn))
 
         dist = lambda stop: stop.stop_dist
         return heapq.nsmallest(n_stops, stops, key = dist)
 
-    def get_dist(self, lat1, lon1, lat2, lon2):
-        return sqrt((float(lat1)-float(lat2))**2 + (float(lon1)-float(lon2))**2)
+    def get_loc(self, lat1, lon1, lat2, lon2):
+        """ Return distance and direction from user to stop (Euclidian approximation) """
+
+        R = 6371 # Approx radius of Earth (km)
+
+        dist = sqrt((float(lat1)-float(lat2))**2 + (float(lon1)-float(lon2))**2)*R
+
+        bearing = atan2((lon2 - lon1),(lat2 - lat1))
+
+        dirn = {
+            "N":    0,
+            "NNE":  22.5,
+            "NE":   45,
+            "ENE":  67.5,
+            "E":    90,
+            "ESE":  112.5,
+            "SE":   135,
+            "SSE":  157.5,
+            "S":    180,
+            "SSW":  202.5,
+            "SW":   225,
+            "WSW":  247.5,
+            "W":    270,
+            "WNW":  292.5,
+            "NW":   315,
+            "NNW":  337.5
+        }
+
+        for key in dirn:
+            if abs(degrees(bearing)-dirn[key]) <= 11.25:
+                return dist, key
+        else:
+            # value must have fallen between 348.75 and 0
+            return dist, "N"
+
 
     def _seconds_since_midnight(self):
         now = time.time()
@@ -150,6 +184,7 @@ class Schedule():
                 'stop':  stop.stop_name,
                 'lines': lines,
                 'dist':  '{0:.1f} km'.format(stop.stop_dist),
+                'dirn': stop.stop_dir
                 })
         return stoplist
 
