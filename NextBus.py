@@ -1,9 +1,15 @@
 from flask import Flask, request, render_template, jsonify, request, redirect, url_for
-from busstops import Schedule
+from busSql import Schedule
 
 app = Flask(__name__)
 
+schedule = Schedule('StaticGtfs.db')
 
+output = [{' ':'s ','lines':[(' ',' ',' '),
+(' ','Loading',' '),
+(' ','d ',' ')]}]
+
+updatedLocation = 0
 
 @app.route('/')
 def index():
@@ -28,15 +34,5 @@ def get_location():
 
     return jsonify(redirect=url_for('index'))
 
-
-
 if __name__ == "__main__":
-    schedule = Schedule()
-
-    output = [{' ':'s ','lines':[(' ',' ',' '),
-    (' ','Loading',' '),
-    (' ','d ',' ')]}]
-
-    updatedLocation = 0
-
     app.run(debug=False)
