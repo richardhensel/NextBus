@@ -1,5 +1,7 @@
+#from werkzeug.contrib.fixers import ProxyFix
+
 from flask import Flask, request, render_template, jsonify, request, redirect, url_for
-from busSql import Schedule
+from BusSql import Schedule
 
 app = Flask(__name__)
 
@@ -29,10 +31,13 @@ def get_location():
     lat = request.args.get('lat', 0, type=str)
     lon = request.args.get('lon', 0, type=str)
 
-    output = schedule.output(lat,lon,n_stops=3,n_times=4)
+    output = schedule.output(float(lat),float(lon),n_stops=3,n_times=4)
     updatedLocation = 1
 
     return jsonify(redirect=url_for('index'))
 
+# WSGI server config. 
+#app.wsgi_app = ProxyFix(app.wsgi_app)
+
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(host='0.0.0.0')
