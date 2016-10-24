@@ -1,5 +1,3 @@
-#from werkzeug.contrib.fixers import ProxyFix
-
 from flask import Flask, request, render_template, jsonify, request, redirect, url_for
 from BusSql import Schedule
 
@@ -7,9 +5,9 @@ app = Flask(__name__)
 
 schedule = Schedule('StaticGtfs.db')
 
-output = [{' ':'s ','lines':[(' ',' ',' '),
+output = [{' ':' ','lines':[(' ',' ',' '),
 (' ','Loading',' '),
-(' ','d ',' ')]}]
+(' ',' ',' ')]}]
 
 updatedLocation = 0
 
@@ -36,8 +34,6 @@ def get_location():
 
     return jsonify(redirect=url_for('index'))
 
-# WSGI server config. 
-#app.wsgi_app = ProxyFix(app.wsgi_app)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
