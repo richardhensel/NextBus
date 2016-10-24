@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, jsonify, request, redirect, url_for
-from busSql import Schedule
+from BusSql import Schedule
 
 app = Flask(__name__)
 
