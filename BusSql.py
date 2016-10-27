@@ -217,6 +217,6 @@ class Schedule():
 if __name__ == '__main__':
 
     schedule = Schedule('StaticGtfs.db')
-    print schedule.output(-27.29907, 153.0146127, 1,3)
+    print schedule.output(-27.4836803,152.9950037, 1,3)
 
     
