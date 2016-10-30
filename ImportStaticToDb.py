@@ -37,6 +37,14 @@ def populateTables(gtfs_dir):
         for row in reader:
             routeTable(row)
 
+    # Calendar Data
+    print('Importing calendar data...')
+    with open(os.path.join(gtfs_dir, 'calendar.txt')) as localfile:
+        reader = csv.reader(localfile,delimiter=',',quotechar='"')
+        reader.next()
+        for row in reader:
+            calendarTable(row)
+
 
 
 def createTables():
@@ -83,6 +91,21 @@ def createTables():
     s += 'route_long_name  text,'
     s += 'route_desc       text,'
     s += 'route_type       text'
+    s += ')'
+    c.execute(s)
+
+    # Create Calendar table
+    s  = 'CREATE TABLE Calendar ('
+    s += 'service_id        text,'
+    s += 'monday            text,'
+    s += 'tuesday           text,'
+    s += 'wednesday         text,'
+    s += 'thursday          text,'
+    s += 'friday            text,'
+    s += 'saturday          text,'
+    s += 'sunday            text,'
+    s += 'start_date        text,'
+    s += 'end_date          text'
     s += ')'
     c.execute(s)
 
@@ -178,6 +201,21 @@ def routeTable(csv_line):
     s += '"' + csv_line[2] + '"' + ','
     s += '"' + csv_line[3] + '"' + ','
     s += '"' + csv_line[4] + '"'
+    s += ')'
+    c.execute(s)
+
+def calendarTable(csv_line):
+    s  = 'INSERT INTO Calendar VALUES('
+    s += '"' + csv_line[0] + '"' + ','
+    s += '"' + csv_line[1] + '"' + ','
+    s += '"' + csv_line[2] + '"' + ','
+    s += '"' + csv_line[3] + '"' + ','
+    s += '"' + csv_line[4] + '"' + ','
+    s += '"' + csv_line[5] + '"' + ','
+    s += '"' + csv_line[6] + '"' + ','
+    s += '"' + csv_line[7] + '"' + ','
+    s += '"' + csv_line[8] + '"' + ','
+    s += '"' + csv_line[9] + '"'
     s += ')'
     c.execute(s)
 
