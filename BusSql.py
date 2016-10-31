@@ -2,7 +2,7 @@ import heapq
 import datetime
 import time
 import sqlite3
-from math import sqrt, atan2, degrees
+from math import sqrt, atan2, degrees, pi, sin, cos
 
 from google.transit import gtfs_realtime_pb2
 import urllib
@@ -98,12 +98,22 @@ class Schedule():
         dist = lambda stop: stop.stop_dist
         return heapq.nsmallest(n_stops, stops, key = dist)
 
+    def deg2rad(self, deg):
+        return deg * (pi/180)
+
     def get_loc(self, lat1, lon1, lat2, lon2):
         """ Return distance and direction from user to stop (Euclidian approximation) """
 
         R = 6371 # Approx radius of Earth (km)
-
-        dist = sqrt((float(lat1)-float(lat2))**2 + (float(lon1)-float(lon2))**2)*R
+        dLat = self.deg2rad(lat2-lat1)
+        dLon = self.deg2rad(lon2-lon1)
+        a = sin(dLat/2) * sin(dLat/2) + cos(self.deg2rad(lat1)) * cos(self.deg2rad(lat2)) * sin(dLon/2) * sin(dLon/2)
+#        dLat = (lat2-lat1) * (pi/180)
+#        dLon = (lon2-lon1) * (pi/180)
+#        a = sin(dLat/2) * sin(dLat/2) + cos(lat1 * (pi/180)) * cos(lat2 * (pi/180)) * sin(dLon/2) * sin(dLon/2)
+        c = 2 * atan2(sqrt(a), sqrt(1-a))
+        dist = R * c
+#       dist = sqrt((float(lat1)-float(lat2))**2 + (float(lon1)-float(lon2))**2)*R
 
         bearing = atan2((lon2 - lon1),(lat2 - lat1))
 
@@ -186,6 +196,7 @@ class Schedule():
                 'dist':  '{0:.1f} km'.format(stop.stop_dist),
                 'dirn': stop.stop_dir
                 })
+	print stoplist
         return stoplist
 
     def update_time(self, updatedFeed, time):
