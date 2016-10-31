@@ -6,3 +6,6 @@
 *.db
 *~
 SEQ_GTFS
+venv
+*.sock
+logs

@@ -43,11 +43,24 @@ class Schedule():
         """ Return the next n arrivals at the given stop """
         
         current_time = self._seconds_since_midnight()
+        current_date = datetime.date.today().strftime('%Y%m%d') # ISO 8601 format, no delimiters
+        current_weekday = datetime.date.today().strftime('%A').lower() # weekday as a string
 
         # Get the next n times which are arriving at a given stop
-        s = 'SELECT trip_id, departure_time_seconds FROM Time WHERE stop_id == "' + str(stop.stop_id) + '"'
-        s += ' AND departure_time_seconds > "' +str(current_time-dt_offset)+ '"'
-        s += ' AND trip_id LIKE "%FUL%"' 
+        s = """
+        SELECT Time.trip_id, Time.departure_time_seconds
+        FROM Time
+        INNER JOIN Trip
+        ON Time.trip_id = Trip.trip_id
+        INNER JOIN Calendar
+        ON Calendar.service_id = Trip.service_id
+        WHERE stop_id == "{stop_id}"
+        AND departure_time_seconds > "{dep_time}"
+        AND {weekday} == "1"
+        AND start_date <= "{date}"
+        -- AND end_date >= "{date}"
+        """.format(stop_id=stop.stop_id, dep_time=current_time-dt_offset,
+            weekday=current_weekday, date=current_date)
         
         self.curs.execute(s)
         rows = self.curs.fetchall()
@@ -62,7 +75,7 @@ class Schedule():
         """ Return the trip (containing route_id and direction_id) for a given stop time """
 
         # Get the next n times which are arriving at a given stop
-        s = 'SELECT route_id FROM Trip WHERE trip_id == "' + str(time.trip_id) + '"'
+        s = 'SELECT route_id, service_id FROM Trip WHERE trip_id == "' + str(time.trip_id) + '"'
         self.curs.execute(s)
         rows = self.curs.fetchall()
         ## There may be multiple route ids for each trip
@@ -199,6 +212,16 @@ class Schedule():
 	print stoplist
         return stoplist
 
+    def disp_output(self, *args, **kwargs):
+        # Print output to console in human readable format for debugging
+
+        stoplist = self.output(*args, **kwargs)
+        for s in stoplist:
+            print('-'*50)
+            print('Stop: {}, Dist: {}, Dirn: {}\n'.format(s['stop'], s['dist'], s['dirn']))
+            for l in s['lines']:
+                print('{}\t{}\t{}'.format(*l))
+
     def update_time(self, updatedFeed, time):
         for updatedLine in updatedFeed:
                 if updatedLine[1] == time.stop_sequence:
@@ -228,6 +251,6 @@ class Schedule():
 if __name__ == '__main__':
 
     schedule = Schedule('StaticGtfs.db')
-    print schedule.output(-27.29907, 153.0146127, 1,3)
+    print schedule.disp_output(-27.484986,152.9970985, 5,3)
 
     
